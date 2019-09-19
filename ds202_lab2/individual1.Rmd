@@ -1,0 +1,40 @@
+---
+title: "Individual 1"
+output: html_document
+---
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/lbchu/ds202_labs/master/choco.csv")
+
+## Inspecting data
+head(choco)
+tail(choco)
+
+nrow(choco)
+ncol(choco)
+
+dim(choco)
+names(choco)
+
+## Question Set
+#1.
+
+boxplot(choco$Rating, main = "Boxplot of Rating from Choco Datatset", xlab = "Rating")
+hist(choco$Rating, main = "Histogram of Rating from Choco Datatset", xlab = "Rating")
+
+
+#From the histogram, you can see that the data are slightly left skewed. The boxplot shows that the ratings are centered near 3.25 and there are outliers at ratings of 2 and below, and at rating of 5.
+
+
+#2.
+plot(choco$Rating, choco$Cocoa.Pct, xlab = "Rating", ylab = "Cocoa %", main = "Rating vs. Cocoa Percent for Chocolate Bars")
+
+#From the plot above, there does not appear to be a relationship between Cocoa percent and rating.
+
+
+#3.
+class(choco$Company.Location)
+#Company location is a factor variable. This means that instead of being characterized by letters and numbers, the variables are assigned number codes to represent them.
+```
+
+
+
