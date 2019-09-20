@@ -2,6 +2,65 @@
 title: "team"
 output: html_document
 ---
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/lbchu/ds202_labs/master/choco.csv")  #gets dataframe from link in argument 
 
+head(choco)#displays the first 6 rows of the dataframe
 
+recent_rating = choco[choco$Review.Date>2011,]#creates new dataframe that is only ratings from 2012 and later
 
+unique(recent_rating$Company.Location) # NOTICE: how many countries are listed but how many levels are there? This just displays the unique countries in the dataframe, 61 unique countries making chocolate
+
+recent_rating$Company.Location = droplevels(recent_rating$Company.Location)#drops rows with no company location
+
+head(recent_rating)#again, displays the first 6 rows of this dataframe
+
+cross_table = table(recent_rating$Review.Date,recent_rating$Company.Location)#creates a table that displays the number of recent ratings based on year and country
+cross_table#displays table
+
+which(cross_table[1,]!=0 & cross_table[2,]!=0 & cross_table[3,]!=0 & cross_table[4,]!=0 & cross_table[5,]!=0)#displays countries and their indexes for countries that always have ratings from 2012 to 2017
+
+france_recent = subset(recent_rating,Company.Location =='France')#creates subset of recent ratings with the country being France
+uk_recent = subset(recent_rating,Company.Location =='U.K.')#creates subset of recent ratings with the country being U.K.
+germany_recent = subset(recent_rating,Company.Location=='Germany')#creates subset of recent ratings with the country being Germany
+
+par(mfrow=c(2,2))#creates plotting window of 2x2
+color1 = ifelse(france_recent$Rating >median(france_recent$Rating), 'blue', 'green')#creates color scheme for first graph
+plot(france_recent$Cocoa.Pct ~ france_recent$Review.Date,ylim=c(50,90),col=color1,pch=18,cex=1.5,xlab="Review Date", ylab= "Cocoa Percentage", main= "France") # plots graph of recent France scores and highlights low and high ratings. Also creates axis labels
+legend('bottomright',legend=c('High Rating', 'Low Rating'),col=c('blue','green'),pch=18)# creates legend
+
+color2 = ifelse(uk_recent$Rating >median(uk_recent$Rating), 'purple', 'red')#creates color scheme for second graph
+plot(uk_recent$Cocoa.Pct ~ uk_recent$Review.Date,ylim=c(50,90),col=color2,pch=18,cex=1.5, xlab="Review Date", ylab= "Cocoa Percentage", main= "UK")# plots graph of recent UK scores and highlights low and high ratings. Also creates axis labels
+legend('bottomright',legend=c('High Rating', 'Low Rating'),col=c('purple','red'),pch=18)#makes legend
+
+color3 = ifelse(germany_recent$Rating > median(germany_recent$Rating), 'orange', 'yellow')#creates color scheme for final graph
+plot(germany_recent$Cocoa.Pct ~ germany_recent$Review.Date,ylim=c(50,90),col=color3,pch=18,cex=1.5,xlab="Review Date", ylab= "Cocoa Percentage", main= "Germany") # plots graph of recent Germany scores and highlights low and high ratings. Also creates axis labels
+legend('bottomright',legend=c('High Rating', 'Low Rating'),col=c('orange','yellow'),pch=18)#makes legend
+```
+
+2. Click Zoom on the Rstudio window (under Plots) to see the plot more clearly. How do you think the plot produced from the code above can be improved? Recommend at least one possible improvement.
+
+I would make the legend smaller or off the graph completely for starters. They yellow is also awful because it is too light agains the white background. Possibly make background darker then. 
+
+3. How does the number of ratings (not the actual value of the rating) depend on the year? Use graphics to answer this question.
+
+In general, the number of ratings per year goes up each year.
+
+4. How do ratings compare across different company locations? Focus on the three locations with the most ratings. Hint: the function sort() might come in handy here.
+
+```{r}
+sort(uk_recent$Rating)
+mean(uk_recent$Rating)
+
+sort(germany_recent$Rating)
+mean(germany_recent$Rating)
+
+sort(france_recent$Rating)
+mean(france_recent$Rating)
+```
+
+Germany has by far the fewest ratings with France having the most 4s and on average the best scores. UK, while having far more scores than Germany and a smaller range, has the lowest average score.
+
+5. Brainstorm and write down an interesting question that can be answer from the dataset. The question should not duplicate the questions above.
+
+Would any location be deemed a "powerhouse" in the past that has no ratings in the most current year? Are there any that have made the ratings only recently?
