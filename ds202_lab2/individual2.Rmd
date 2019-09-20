@@ -1,0 +1,41 @@
+---
+title: "Individual 2: Christian Simmons"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+choco <- read.csv("https://raw.githubusercontent.com/lbchu/ds202_labs/master/choco.csv")   
+
+head(choco)
+
+```
+1. How are ratings distributed? Don’t forget to mention outliers, if there are any:
+
+```{r}
+boxplot(choco$Rating,xlab="Ratings of Chocolate")
+```
+
+It seems like the ratings have more outliers toward the bottom of the spectrum with a couple around the top, but most ratings are right around 3.2 in what looks to be a mostly normal distribution.
+
+2. Do ratings depend on the cacao percentage of a chocolate bar?
+```{r}
+ratingRound <- round(choco$Rating)
+counts <- table(ratingRound, choco$Cocoa.Pct)
+barplot(counts, main="Car Distribution by Gears and VS",
+  xlab="Cocoa Percent", col=c("darkblue","red","yellow","light green","pink"),
+  legend = rownames(counts))
+```
+
+Most of the 5 and 4 stars seem to be around the 70% Cocoa range.
+
+3. What class is the variable representing company locations? How is this different from a ‘character’ variable? (You do not need to produce a graphic for this question.)
+
+```{r}
+class(choco$Broad.Bean.Origin)
+```
+The variable is a "factor" class variable. This means the characters in the string are stored as integers instead of characters. This can be useful for keeping file size low.
